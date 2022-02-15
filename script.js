@@ -29,6 +29,7 @@ function addMarker(coords, obj) {
 
   marker.addListener("click", () => {
     console.log(obj);
+    createDiv(obj);
     // create div on selected marker
     infowindow.open({
       anchor: marker,
@@ -145,3 +146,20 @@ document.querySelector("#remove-markers-btn").addEventListener("click", () => {
 //   });
 // });
 //////////////////////////////////////////////////////////////////////////////////////////////
+
+function createDiv(obj) {
+  switch (obj.grade) {
+    case "A":
+      document.getElementById("right-side").style.backgroundColor = "#0275d8";
+      break;
+
+    case "B":
+      document.getElementById("right-side").style.backgroundColor = "#5cb85c";
+      break;
+    case "c":
+      document.getElementById("right-side").style.backgroundColor = "#f0ad4e";
+      break;
+    case "undefined":
+      document.getElementById("right-side").style.backgroundColor = "#cbc3e3";
+  }
+}
