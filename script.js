@@ -1,15 +1,5 @@
+// api endpoint
 const uri = "https://data.cityofnewyork.us/resource/43nn-pn8j.json?dba=";
-//fetch api
-function fetchRestaurant(restaurantName) {
-  fetch(`${uri}${restaurantName}`)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Success:", data);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-}
 //geolocation
 navigator.geolocation.getCurrentPosition(
   function (position) {
@@ -26,20 +16,17 @@ navigator.geolocation.getCurrentPosition(
     initMap(40.70521, -74.013757);
   }
 );
-// if ("geolocation" in navigator) {
-//   navigator.geolocation.getCurrentPosition((position) => {
-//     let y = position.coords.latitude;
-//     let x = position.coords.longitude;
-//     console.log(position);
-//     console.log(y, x);
-//     // initMap(position);
-//     initMap(y, x);
-//     //use geolocation coords when available
-//   });
-// } else {
-//   alert("please enable browser location!");
-//   //use FLAT IRON SCHOOL coordinates as default if geolocation not available
-// }
+//fetch api
+function fetchRestaurant(restaurantName) {
+  fetch(`${uri}${restaurantName}`)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Success:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
 
 //google maps initial load
 function initMap(y, x) {
@@ -116,4 +103,3 @@ document
 //   });
 // });
 //////////////////////////////////////////////////////////////////////////////////////////////
-
