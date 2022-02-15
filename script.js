@@ -14,7 +14,7 @@ fetch(uri, {
     console.error("Error:", error);
   });
 
-//google maps
+//google maps intial load
 function initMap() {
   //Map options
   let options = {
@@ -38,4 +38,18 @@ function initMap() {
       marker.setAnimation(google.maps.Animation.BOUNCE);
     }
   }
+}
+
+let markers = []; //insert search query coords and content
+//loop through markers
+for (let i = 0; i < markers.length; i++) {
+  addMarker(markers[i]);
+}
+
+//add markers for selected restaurant
+function addMarker(coords) {
+  let marker = new google.maps.Marker({
+    position: coords,
+    map: map,
+  });
 }
