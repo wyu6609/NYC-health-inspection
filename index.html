@@ -12,13 +12,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <script src = "./script.js"></script>
     <link href="style.css" rel="stylesheet" defer />
   </head>
   <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
       <div class="container-fluid">
-        <img class="navbar-brand" src="./logo.jpeg" />
+        <img class="navbar-brand .img-responsive"  src="./logo.jpeg" />
           <input
             type="search"
             class="form-control rounded"
@@ -26,32 +27,41 @@
             aria-label="Search"
             aria-describedby="search-addon"
           />
-          <button type="button" class="btn btn-outline-primary">search</button>
+          <button id = "search-button" type="button" class="btn btn-outline-primary">search</button>
         </div>
   
       </div>
     </nav>
+ <!-- Main content -->
+ <div class="d-md-flex h-md-100 align-items-center">
 
-    <!--- content -->
-    <div class="d-md-flex h-md-100 align-items-center">
-
-      <!-- First Half -->
-      <div class="col-md-6 p-0 bg-indigo h-md-100">
-          <div class="text-white d-md-flex align-items-center h-100 p-5 text-center justify-content-center">
-              <div class="logoarea pt-5 pb-5">
-                  <!-- integrate GOOGLE MAPS HERE -->
-              </div>
-          </div>
-      </div>
-  
-      <!-- Second Half -->
-      <div class="col-md-6 p-0 bg-white h-md-100 loginarea">
-          <div class="d-md-flex align-items-center h-md-100 p-5 justify-content-center">
-              <!--DISPLAY goes here-->
-          </div>
-      </div>
-          
-  </div>
+  <!-- First Half -->
+  <div class="col-md-6 p-0 bg-white h-md-100 loginarea">
+ 
+   
+      <div id = "map"  class="d-md-flex align-items-center h-md-100 p-5 justify-content-center"></div>
     
+</div>
+
+  
+
+  <!-- Second Half -->
+  <div class="col-md-6 p-0 bg-indigo h-md-100">
+    <div class="text-white d-md-flex align-items-center h-100 p-5 text-center justify-content-center">
+        <div class="logoarea pt-5 pb-5">
+          RENDER SELECTED RESTAURANT INFO HERE
+        </div>
+    </div>
+</div>
+      
+</div>
+
+<!--GOOGLE MAPS SCRIPTS-->
+ 
+      <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+      <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGsrMolBmnpfYcMB1HiPo7JRvs5aZCvF4&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>
   </body>
 </html>

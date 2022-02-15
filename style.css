@@ -4,7 +4,10 @@ img {
   width: 250px;
   height: 100px;
 }
-
+#map {
+  height: 100%;
+  width: 100%;
+}
 /*---Media Queries --*/
 @media (min-width: 768px) {
   .h-md-100 {
