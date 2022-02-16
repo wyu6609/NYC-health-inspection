@@ -1,16 +1,13 @@
 // api endpoint
 const uri = "https://data.cityofnewyork.us/resource/43nn-pn8j.json?dba=";
-let coords;
-let map;
-let mapMarker;
-let score;
+let coords, map, mapMarker, score, markerColor;
 //add markers for selected restaurant
 function addMarker(obj) {
   coords = {
     lat: parseFloat(obj.latitude),
     lng: parseFloat(obj.longitude),
   };
-  setIconColor(obj["grade"]);
+  markerColor = obj.grade;
 
   // setScore(obj.score);
   let marker = new google.maps.Marker({
@@ -19,7 +16,7 @@ function addMarker(obj) {
     draggable: true,
     animation: google.maps.Animation.DROP,
     title: obj.grade,
-    icon: mapMarker,
+    icon: `./mapIcons/grade-icon-${obj.grade}.png`,
   });
   marker.setDraggable(false);
   function toggleBounce() {
@@ -29,25 +26,27 @@ function addMarker(obj) {
       marker.setAnimation(google.maps.Animation.BOUNCE);
     }
   }
-  const contentString = `
-  <h2>${obj.dba}</h2>
-  <h3>Grade: ${obj.grade}</h3>
-  <h3>Score: ${obj.score}</h3>
-  <p>An inspection score of 0 to 13 is an A, 14 to 27 points is a B, and 28 or more points is a C.<p>`;
-  const infowindow = new google.maps.InfoWindow({
-    content: contentString,
-  });
+  // const contentString = `
+  // <h2>${obj.dba}</h2>
+  // <h3>Grade: ${obj.grade}</h3>
+  // <h3>Score: ${obj.score}</h3>
+  // <p>An inspection score of 0 to 13 is an A, 14 to 27 points is a B, and 28 or more points is a C.<p>`;
+  // const infowindow = new google.maps.InfoWindow({
+  //   content: contentString,
+  // });
 
   marker.addListener("click", () => {
     // create div on selected marker
     createDiv(obj["grade"]);
     //set poster
     setGradePoster(obj["grade"]);
-    infowindow.open({
-      anchor: marker,
-      map,
-      shouldFocus: false,
-    });
+    generateCardInfo(obj);
+
+    // infowindow.open({
+    //   anchor: marker,
+    //   map,
+    //   shouldFocus: false,
+    // });
   });
 }
 
@@ -158,6 +157,19 @@ document.addEventListener("keydown", function (event) {
 //   });
 // });
 //////////////////////////////////////////////////////////////////////////////////////////////
+function generateCardInfo(obj) {
+  let phoneNumber = formatPhoneNumber(obj.phone); // convert json Phone number string to phone number format
+
+  let gradeStats = document.getElementById("grade-stats-here"); // Last violation description
+  let gradeStats2 = document.getElementById("grade-stats-here-2"); // last date
+  let gradeStats3 = document.getElementById("grade-stats-here-3"); // score (An inspection score of 0 to 13 is an A, 14 to 27 points is a B, and 28 or more points is a C.)
+  let restaurantName = document.getElementById("restaurant-name"); // restaurant name
+  let restaurantInfo = document.getElementById("restaurant-info"); // address & telephone
+  restaurantName.textContent = `${obj.dba} ${phoneNumber}`;
+  restaurantInfo.textContent = `ADDRESS: ${obj.building} ${obj.street} ${obj.boro} ${obj.zipcode}             
+   `;
+}
+
 //changes right side background based on grade of restaurant clicked
 function createDiv(grade) {
   switch (grade) {
@@ -175,42 +187,35 @@ function createDiv(grade) {
       document.getElementById("right-side").style.backgroundColor = "#cbc3e3"; //grade pending
   }
 }
-//different map marker colors based on restaurant grade;
-function setIconColor(grade) {
-  switch (grade) {
-    case "A":
-      mapMarker = "./mapIcons/grade-A-icon.png";
-      break;
-
-    case "B":
-      mapMarker = "./mapIcons/grade-B-icon.png";
-      break;
-    case "c":
-      mapMarker = "./mapIcons/grade-C-icon.png";
-      break;
-    case undefined:
-      mapMarker = "./mapIcons/nograde-icon.png";
-  }
-}
 //set posters based on grade and restaurant
 function setGradePoster(grade) {
   let gradePoster = document.getElementById("grade-poster");
+  // gradePoster.src = `./grades/grade-poster-${grade}.jpg`;
   switch (grade) {
     case "A":
-      gradePoster.src = "./grades/gradeA-poster.jpg";
+      gradePoster.src = "./grades/grade-poster-A.jpg";
       gradePoster.alt = "Grade A Poster";
       break;
 
     case "B":
-      gradePoster.src = "./grades/gradeB-poster.jpeg";
+      gradePoster.src = "./grades/grade-poster-B.jpg";
       gradePoster.alt = "Grade B Poster";
       break;
     case "c":
-      gradePoster.src = "./grades/gradeC-poster.jpg";
+      gradePoster.src = "./grades/grade-poster-C.jpg";
       gradePoster.alt = "Grade C Poster";
       break;
     case undefined:
-      gradePoster.src = "./grades/gradePending-poster.jpg";
+      gradePoster.src = "./grades/grade-poster-undefined.jpg";
       gradePoster.alt = "Grade Pending Poster";
   }
+}
+/////////////////////////////////////////////////////////////////
+function formatPhoneNumber(phoneNumberString) {
+  var cleaned = ("" + phoneNumberString).replace(/\D/g, "");
+  var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+  if (match) {
+    return "(" + match[1] + ") " + match[2] + "-" + match[3];
+  }
+  return null;
 }
