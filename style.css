@@ -1,8 +1,11 @@
 @import url("https://fonts.googleapis.com/css?family=Poppins:400,500,700");
 
-img {
+img[src="./logo.jpeg"] {
   width: 250px;
-  height: 100px;
+  height: 80px;
+  border-style: solid;
+  border-color: #cbc3e3;
+  border-radius: 30px;
 }
 #map {
   height: 100%;

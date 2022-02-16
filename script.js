@@ -1,16 +1,27 @@
 // api endpoint
 const uri = "https://data.cityofnewyork.us/resource/43nn-pn8j.json?dba=";
+let coords;
 let map;
-
+let mapMarker;
+let score;
 //add markers for selected restaurant
-function addMarker(coords, obj) {
+function addMarker(obj) {
+  coords = {
+    lat: parseFloat(obj.latitude),
+    lng: parseFloat(obj.longitude),
+  };
+  setIconColor(obj["grade"]);
+
+  // setScore(obj.score);
   let marker = new google.maps.Marker({
     position: coords,
     map: map,
     draggable: true,
     animation: google.maps.Animation.DROP,
     title: obj.grade,
+    icon: mapMarker,
   });
+  marker.setDraggable(false);
   function toggleBounce() {
     if (marker.getAnimation() !== null) {
       marker.setAnimation(null);
@@ -28,9 +39,10 @@ function addMarker(coords, obj) {
   });
 
   marker.addListener("click", () => {
-    console.log(obj);
-    createDiv(obj);
     // create div on selected marker
+    createDiv(obj["grade"]);
+    //set poster
+    setGradePoster(obj["grade"]);
     infowindow.open({
       anchor: marker,
       map,
@@ -46,13 +58,8 @@ function fetchRestaurant(restaurantName) {
     .then((data) => {
       console.log("Success:");
       data.forEach((obj) => {
-        let coords = {
-          lat: parseFloat(obj.latitude),
-          lng: parseFloat(obj.longitude),
-        };
-
-        console.log(obj);
-        addMarker(coords, obj);
+        // console.log(obj);
+        addMarker(obj);
       });
     })
     .catch((error) => {
@@ -80,20 +87,21 @@ navigator.geolocation.getCurrentPosition(
 //google maps initial load
 function initMap(y, x) {
   //Map options
-  console.log(y, x);
+  // console.log(y, x);
   let options = {
     zoom: 14,
     center: { lat: y, lng: x },
   };
   //new map
   map = new google.maps.Map(document.getElementById("map"), options);
+
   //map options
   let marker = new google.maps.Marker({
     position: { lat: y, lng: x },
     draggable: true,
     animation: google.maps.Animation.DROP,
     map: map,
-    icon: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
+    icon: "./mapIcons/current-location-icon.png",
   });
   function toggleBounce() {
     if (marker.getAnimation() !== null) {
@@ -126,11 +134,15 @@ document
     }
   });
 
-function delMarkers(map) {
-  map.clearOverlays();
-}
 document.querySelector("#remove-markers-btn").addEventListener("click", () => {
   console.log("clicked");
+});
+
+//Escape key event listener to close google maps street view
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Escape") {
+    map.getStreetView().setVisible(false);
+  }
 });
 // const charactersList = document.getElementById("charactersList");
 // const searchBar = document.getElementById("searchBar");
@@ -146,9 +158,9 @@ document.querySelector("#remove-markers-btn").addEventListener("click", () => {
 //   });
 // });
 //////////////////////////////////////////////////////////////////////////////////////////////
-
-function createDiv(obj) {
-  switch (obj.grade) {
+//changes right side background based on grade of restaurant clicked
+function createDiv(grade) {
+  switch (grade) {
     case "A":
       document.getElementById("right-side").style.backgroundColor = "#0275d8";
       break;
@@ -159,7 +171,46 @@ function createDiv(obj) {
     case "c":
       document.getElementById("right-side").style.backgroundColor = "#f0ad4e";
       break;
-    case "undefined":
-      document.getElementById("right-side").style.backgroundColor = "#cbc3e3";
+    case undefined:
+      document.getElementById("right-side").style.backgroundColor = "#cbc3e3"; //grade pending
+  }
+}
+//different map marker colors based on restaurant grade;
+function setIconColor(grade) {
+  switch (grade) {
+    case "A":
+      mapMarker = "./mapIcons/grade-A-icon.png";
+      break;
+
+    case "B":
+      mapMarker = "./mapIcons/grade-B-icon.png";
+      break;
+    case "c":
+      mapMarker = "./mapIcons/grade-C-icon.png";
+      break;
+    case undefined:
+      mapMarker = "./mapIcons/nograde-icon.png";
+  }
+}
+//set posters based on grade and restaurant
+function setGradePoster(grade) {
+  let gradePoster = document.getElementById("grade-poster");
+  switch (grade) {
+    case "A":
+      gradePoster.src = "./grades/gradeA-poster.jpg";
+      gradePoster.alt = "Grade A Poster";
+      break;
+
+    case "B":
+      gradePoster.src = "./grades/gradeB-poster.jpeg";
+      gradePoster.alt = "Grade B Poster";
+      break;
+    case "c":
+      gradePoster.src = "./grades/gradeC-poster.jpg";
+      gradePoster.alt = "Grade C Poster";
+      break;
+    case undefined:
+      gradePoster.src = "./grades/gradePending-poster.jpg";
+      gradePoster.alt = "Grade Pending Poster";
   }
 }
