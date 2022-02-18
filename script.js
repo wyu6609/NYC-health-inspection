@@ -21,7 +21,7 @@ function initMap() {
     icon: "./mapIcons/current-location-icon.png",
   });
 
-  window.addEventListener("load", () => {
+  window.addEventListener("load", (event) => {
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -97,7 +97,6 @@ function searchRestaurant() {
 
 document.querySelector("#search-button").addEventListener("click", function () {
   console.log("clicked");
-  reset();
   markersArr.forEach((markers) => markers.setMap(null));
   markersArr = [];
   searchRestaurant();
@@ -141,13 +140,7 @@ function markAllRestaurants() {
       lat: parseFloat(restaurant.latitude),
       lng: parseFloat(restaurant.longitude),
     };
-    if (
-      restaurant.grade !== undefined ||
-      restaurant.grade !== "P" ||
-      restaurant.grade !== "Z"
-    ) {
-      addMarker(restaurant, coords);
-    }
+    addMarker(restaurant, coords);
   });
 }
 
@@ -279,10 +272,11 @@ function formatPhoneNumber(phoneNumberString) {
 
 /////////////////////
 document.getElementById("remove-markers-btn").addEventListener("click", () => {
-  location.reload();
+  // location.reload();
+  resetUI();
 });
-function reset() {
-  document.getElementById("right-side").style.backgroundColor = "#cbc3e3";
+
+function resetUI() {
   document.querySelector(
     "#display-container"
   ).innerHTML = `<img id = "grade-poster"src="./grades/grade-poster-undefined.jpg" class="card-img-top" alt="...">
@@ -300,5 +294,5 @@ function reset() {
   </ul>`;
   markersArr.forEach((markers) => markers.setMap(null));
   markersArr = [];
+  document.getElementById("right-side").style.backgroundColor = "#cbc3e3";
 }
-
