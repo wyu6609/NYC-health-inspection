@@ -34,7 +34,7 @@ function initMap() {
 
           infoWindow.open(map);
           map.setCenter(pos);
-          map.setZoom(14);
+          map.setZoom(12);
         },
         () => {
           handleLocationError(true, infoWindow, map.getCenter());
@@ -59,6 +59,8 @@ function addMarkers(globalData) {
     title: obj.grade,
     icon: `./mapIcons/grade-icon-${obj.grade}.png`,
   });
+  markersArr.push(marker);
+  console.log(markersArr);
 }
 ////////////////////////////////////////////////////////////////////////////////////
 
@@ -95,14 +97,19 @@ function searchRestaurant() {
 
 document.querySelector("#search-button").addEventListener("click", function () {
   console.log("clicked");
+  reset();
+  markersArr.forEach((markers) => markers.setMap(null));
+  markersArr = [];
   searchRestaurant();
 });
 
 document
   .querySelector("#search-bar")
   .addEventListener("keyup", function (event) {
-    console.log(document.querySelector("#search-bar").value.toUpperCase());
+    // console.log(document.querySelector("#search-bar").value.toUpperCase());
     if (event.key == "Enter") {
+      markersArr.forEach((markers) => markers.setMap(null));
+      markersArr = [];
       searchRestaurant();
     }
   });
@@ -134,7 +141,13 @@ function markAllRestaurants() {
       lat: parseFloat(restaurant.latitude),
       lng: parseFloat(restaurant.longitude),
     };
-    addMarker(restaurant, coords);
+    if (
+      restaurant.grade !== undefined ||
+      restaurant.grade !== "P" ||
+      restaurant.grade !== "Z"
+    ) {
+      addMarker(restaurant, coords);
+    }
   });
 }
 
@@ -172,10 +185,12 @@ function addMarker(restaurant, coords) {
     setGradePoster(restaurant["grade"]);
     generateCardInfo(restaurant);
   });
+  markersArr.push(marker);
 }
 
 ////////////////////////////////////////////////////////////////////////////
 // removes Duplicate entries in JSON DATA (health inspection api poorly managed -a lot of duplicate entries)
+
 function removeDuplicates() {
   // Create an array of objects
 
@@ -187,6 +202,7 @@ function removeDuplicates() {
   // console.log(uniqueArray);
   noDuplicateJSON = uniqueArray;
 }
+
 ///////////////////////////////////////////////////////////////////////////////
 function generateCardInfo(obj) {
   let phoneNumber = formatPhoneNumber(obj.phone); // convert json Phone number string to phone number format
@@ -265,3 +281,24 @@ function formatPhoneNumber(phoneNumberString) {
 document.getElementById("remove-markers-btn").addEventListener("click", () => {
   location.reload();
 });
+function reset() {
+  document.getElementById("right-side").style.backgroundColor = "#cbc3e3";
+  document.querySelector(
+    "#display-container"
+  ).innerHTML = `<img id = "grade-poster"src="./grades/grade-poster-undefined.jpg" class="card-img-top" alt="...">
+  <div class="card-body">
+    
+    <h5 id = "current-grade" class="card-title">NYC HEALTH INSPECTION STATS</h5>
+    <p id = "grade-stats-here" class="card-text">The Health Department conducts unannounced inspections of restaurants at least once a year. Inspectors check that restaurants comply with food safety rules.</p>
+    <p id = "grade-stats-here-2"></p>
+    <p id = "grade-stats-here-3"></p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li id = "restaurant-name" class="list-group-item"><a href="https://dev.socrata.com/foundry/data.cityofnewyork.us/43nn-pn8j" target = "_blank">NYC HEALTH INSPECTION API DATABASE </a></li>
+    <li id = "restaurant-info" class="list-group-item">More info can be found <a href="https://www1.nyc.gov/site/doh/business/food-operators/the-inspection-process.page" target = "_blank">here</a>.
+    
+  </ul>`;
+  markersArr.forEach((markers) => markers.setMap(null));
+  markersArr = [];
+}
+
