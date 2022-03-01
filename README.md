@@ -3,4 +3,4 @@ My FlatIron School phase 1 project. My first time using and implementing google 
 An app that displays NYC restaurant health inspection stats using Google maps api and the NYC Health Inspection Database API and bootstrap for front end UI
 
 
-<img src="demo.gif" width="250" height="250"/>
+<img src="demo.gif" width="640" height="476"/>
