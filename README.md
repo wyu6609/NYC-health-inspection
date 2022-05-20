@@ -16,4 +16,4 @@ This web application displays NYC restaurant health inspection stats using Googl
 
 ## User can search a NYC Food Establishment, select restaurant markers and see their latest official NYC Health Stats
 
-<p align="center"><img src = "/git-demo/search.gif"/></p>
+<p align="center"><img src = "/gitgifs/search.gif"/></p>
