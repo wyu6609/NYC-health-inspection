@@ -1,5 +1,5 @@
 # NYC Health Inspection App
-
+<a href = "https://www.youtube.com/watch?v=cagxhY3IvwE" target = "_blank">Watch project demo here!</a>
 ## Description
 
 This web application displays NYC restaurant health inspection stats using Google Maps API and the NYC Health Inspection Database API. The user interface is built with HTML, BootStrap and Vanilla JavaScript.
