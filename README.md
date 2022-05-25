@@ -8,6 +8,7 @@ This web application displays NYC restaurant health inspection stats using Googl
 
 ## Technology Stack
 
+- Google Maps API
 - Vanilla JavaScript
 - BootStrap
 - REST API
