@@ -1,4 +1,4 @@
-# NYC Health Inspection App
+<h1 align = "center">NYC Health Inspection App</h1>
 <p align="center"><a href = "https://www.youtube.com/watch?v=cagxhY3IvwE" target = "_blank">Watch project demo here!</a></p>
 <p align="center"><a href = "https://nyc-health-inspection.netlify.app/" target = "_blank">Deployed Website here!</a></p>
 
