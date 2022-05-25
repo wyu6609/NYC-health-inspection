@@ -1,6 +1,7 @@
 # NYC Health Inspection App
 <p><a href = "https://www.youtube.com/watch?v=cagxhY3IvwE" target = "_blank">Watch project demo here!</a></p>
 <p><a href = "https://nyc-health-inspection.netlify.app/" target = "_blank">Deployed Website here!</a></p>
+
 ## Description
 
 This web application displays NYC restaurant health inspection stats using Google Maps API and the NYC Health Inspection Database API. The user interface is built with HTML, BootStrap and Vanilla JavaScript.
